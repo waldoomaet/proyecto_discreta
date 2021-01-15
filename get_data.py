@@ -8,7 +8,7 @@ from pathlib import Path
 # Just keep in mind that this function returns the response of the API query
 def get_books_from_api(toSearch, pageCount):
     url = f"https://www.googleapis.com/books/v1/volumes?q={toSearch}&maxResults=40&startIndex={pageCount}&key" \
-          f"=AIzaSyB65dZkHx_HW9HfvPf-SiMJoo5f-TcCEos "
+          f"=your_key "
     return json.loads((requests.get(url)).content)
 
 
