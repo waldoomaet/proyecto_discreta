@@ -1,6 +1,6 @@
-import get_data
-import Sort
-import Search
+from Class.Book import Book
+from Class.Bookshelf import Bookshelf
+from string import ascii_lowercase
 import time
 
 allowedInputs = ["printcmds", "printall", "printcount", "printrange", "searchbyname", "searchbyid", "end"]
@@ -19,14 +19,18 @@ allowedInputs = ["printcmds", "printall", "printcount", "printrange", "searchbyn
 print("Buscando data", end='')
 
 # This gets the books. If there is no pickle file then go find the books with the API
-data = get_data.retrieve_books() if get_data.is_there_pickle() else get_data.retrieve_books(True)
+bookshelfs: list[Bookshelf] = []
+for letter in "abc":
+    bookshelfs.append(Bookshelf(letter))
 
 # Prettier
 print("\nOrganizando data...")
 start = time.time()
 
 # Sorting data
-data = Sort.merge_sort(data)
+for bookshelf in bookshelfs:
+    bookshelf.sort_books()
+    bookshelf.find_book("Injertando a Dioniso")
 print(f"Ordenado en {round(time.time() - start, 3)} segundos")
 
 while True:
