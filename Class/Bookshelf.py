@@ -1,13 +1,16 @@
+from typing import List
 from Class.Book import Book
 from Class.APIService import APIService
+from typing import List
+
 
 class Bookshelf:
     def __init__(self, name:str) -> None:
         self.name = name
-        self.books = APIService.retrive_books(name)
+        self.books = APIService.retrieve_books(name)
 
     @staticmethod
-    def __merge_sort(list: list[Book]) -> list[Book]:
+    def __merge_sort(list: List[Book]) -> List[Book]:
         if len(list) > 1:
             mid = len(list) // 2
             L = list[:mid]
@@ -37,10 +40,10 @@ class Bookshelf:
 
         return list
 
-    def __binary_search(list: list[Book], l: int, r: int, x: str) -> Book:
+    def __binary_search(list: List[Book], l: int, r: int, x: str) -> Book:
         while l <= r:
             mid = l + (r - l) // 2
-            if list[mid].name == x:
+            if list[mid].name == x or x in list[mid].name:
                 return list[mid]
             elif list[mid].name < x:
                 l = mid + 1

@@ -2,8 +2,12 @@ from Class.Book import Book
 from Class.Author import Author
 import requests
 import json
+from typing import List
+
 
 class APIService:
+    count = 1
+
     @staticmethod
     def __get_books_from_api(to_search: str, page_count: str) -> object:
         url = f"https://www.googleapis.com/books/v1/volumes?q={to_search}&maxResults=40" \
@@ -11,21 +15,21 @@ class APIService:
         return json.loads((requests.get(url)).content)
 
 
-    @staticmethod
-    def retrive_books(word: str) -> list[Book]:
+    @classmethod
+    def retrieve_books(cls, word: str) -> List[Book]:
         # Saves the response
         response = APIService.__get_books_from_api(word, 0)
 
-        if "items" in list(response.keys()):
+        if "items" in response.keys():
             raw_books = response["items"]
             books = []
             for book in raw_books:
-                volumen_info_keys = list(book["volumeInfo"].keys())
-                title = book["volumeInfo"]["title"] if "title" in volumen_info_keys else ""
-                description = book["volumeInfo"]["description"] if "description" in volumen_info_keys else ""
-                published_date = book["volumeInfo"]["publishedDate"] if "publishedDate" in volumen_info_keys else ""
-                author = Author(", ".join(book["volumeInfo"]["authors"])) if "authors" in volumen_info_keys else None
-                books.append(Book(title, description, published_date, author))
+                title = book["volumeInfo"]["title"].upper()
+                description = book["volumeInfo"]["description"] if "description" in book["volumeInfo"] else None
+                published_date = book["volumeInfo"]["publishedDate"] if "publishedDate" in book["volumeInfo"] else None
+                author = Author(book["volumeInfo"]["authors"]) if "authors" in book["volumeInfo"] else None
+                books.append(Book(cls.count, title, description, published_date, author))
+                cls.count += 1
             return books
         
         else:
