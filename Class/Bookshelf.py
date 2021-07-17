@@ -5,9 +5,12 @@ from typing import List
 
 
 class Bookshelf:
-    def __init__(self, name:str) -> None:
-        self.name = name
-        self.books = APIService.retrieve_books(name)
+    def __init__(self, name:str = None) -> None:
+        self.name = ""
+        self.books = []
+        if name:
+            self.name = name
+            self.books = APIService.retrieve_books(name)
 
     @staticmethod
     def __merge_sort(list: List[Book]) -> List[Book]:
